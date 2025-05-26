@@ -1,12 +1,15 @@
+import { Button } from "./components/ui/button";
 
 
 export function App() {
   
 
   return (
-    <h1 className="text-3xl">
-     Hello
-    </h1>
+    <div className="flex justify-center items-center h-screen">
+      <Button className="cursor-pointer">
+        Enviar
+      </Button>
+    </div>
   )
 }
 
