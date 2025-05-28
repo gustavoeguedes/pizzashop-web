@@ -1,8 +1,11 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
 import { useState } from 'react'
 
+import { cancelOrder } from '../../../api/cancel-order'
+import type { GetOrdersResponse } from '../../../api/get-orders'
 import { Button } from '../../../components/ui/button'
 import { Dialog, DialogTrigger } from '../../../components/ui/dialog'
 import { TableCell, TableRow } from '../../../components/ui/table'
@@ -21,6 +24,29 @@ export interface OrderTableRowProps {
 
 export function OrderTableRow({ order }: OrderTableRowProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+  const queryClient = useQueryClient()
+  const { mutateAsync: cancelOrderFn } = useMutation({
+    mutationFn: cancelOrder,
+    async onSuccess(_, { orderId }) {
+      const cached = queryClient.getQueriesData<GetOrdersResponse>({
+        queryKey: ['orders'],
+      })
+
+      cached.forEach(([cacheKey, cacheData]) => {
+        if (!cacheData) return null
+
+        queryClient.setQueryData<GetOrdersResponse>(cacheKey, {
+          ...cacheData,
+          orders: cacheData.orders.map((order) => {
+            if (order.orderId === orderId) {
+              return { ...order, status: 'canceled' } as const
+            }
+            return order
+          }),
+        })
+      })
+    },
+  })
   return (
     <TableRow>
       <TableCell>
@@ -63,7 +89,12 @@ export function OrderTableRow({ order }: OrderTableRowProps) {
         </Button>
       </TableCell>
       <TableCell>
-        <Button variant={'ghost'} size="sm">
+        <Button
+          onClick={() => cancelOrderFn({ orderId: order.orderId })}
+          disabled={!['pending', 'processing'].includes(order.status)}
+          variant={'ghost'}
+          size="sm"
+        >
           <X className="mr-2 h-3 w-3" />
           Cancelar
         </Button>
