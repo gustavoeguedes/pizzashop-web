@@ -11,13 +11,13 @@ import {
   CardTitle,
 } from '../../../components/ui/card'
 
-const data = [
-  { product: 'pepperoni', amount: 40 },
-  { product: 'Mussarela', amount: 30 },
-  { product: 'Marguerita', amount: 12 },
-  { product: '4 queijos', amount: 17 },
-  { product: 'Frango frito', amount: 25 },
-]
+// const data = [
+//   { product: 'pepperoni', amount: 40 },
+//   { product: 'Mussarela', amount: 30 },
+//   { product: 'Marguerita', amount: 12 },
+//   { product: '4 queijos', amount: 17 },
+//   { product: 'Frango frito', amount: 25 },
+// ]
 
 const COLORS = [
   colors.sky[500],
