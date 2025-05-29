@@ -18,8 +18,8 @@ import {
   TableHeader,
   TableRow,
 } from '../../../components/ui/table'
-import { OrderStatus } from './order-status'
 import { OrderDetailsSkeleton } from './order-details-skeleton'
+import { OrderStatus } from './order-status'
 
 export interface OrderDetailsProps {
   orderId: string
