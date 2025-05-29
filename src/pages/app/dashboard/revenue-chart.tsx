@@ -30,7 +30,7 @@ export function RevenueChart() {
   })
 
   const { data: dailyRevenueInPeriod } = useQuery({
-    queryKey: ['metrics', 'daily-revenue-in-period'],
+    queryKey: ['metrics', 'daily-revenue-in-period', dateRange],
     queryFn: () =>
       getDailyRevenueInPeriod({
         from: dateRange?.from,
